@@ -16,6 +16,7 @@ export const predictScore = async ({
   return scorePrediction;
 };
 
+
 // example
 // predictScore({
 //   teamA: "Malte",
