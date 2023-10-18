@@ -4,6 +4,7 @@
   "description": "A score simulation between two teams",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  
   "scripts": {
     "dev": "nodemon --exec ts-node",
     "build": "tsc",
@@ -27,5 +28,10 @@
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "puppeteer": "^21.3.8"
   }
+
+  
 }
