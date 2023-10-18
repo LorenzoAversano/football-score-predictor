@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/LorenzoAversano/football-score-predictor/issues"
   },
-  "homepage": "https://github.com/LorenzoAversano/football-score-predictor#readme"
+  "homepage": "https://github.com/LorenzoAversano/football-score-predictor#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.51.0"
+  }
 }
