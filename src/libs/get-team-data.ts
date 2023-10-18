@@ -8,7 +8,7 @@ type TeamData = {
   last5Games: boolean[];
 }
 
-export const getTeamData = async (teamName: string): Promise<string> => {
+export const getTeamData = async (teamName: string): Promise<TeamData> => {
   const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -43,7 +43,7 @@ export const getTeamData = async (teamName: string): Promise<string> => {
 
   await browser.close();
 
-  return JSON.stringify(teamData);
+  return teamData;
 };
 
 
