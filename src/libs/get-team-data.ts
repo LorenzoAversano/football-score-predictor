@@ -22,9 +22,9 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
 
   const teamData: TeamData = await page.evaluate((teamName) => {
     const name = teamName;
-    const goalScoredByMatch = parseFloat(document.querySelector('body > div.main > div.group.group--3 > div.group__main > div:nth-child(5) > div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(3) > div.globalStatItem__value')?.innerHTML);
-    const goalTakenByMatch = parseFloat(document.querySelector('body > div.main > div.group.group--3 > div.group__main > div:nth-child(5) > div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(2) > div.globalStatItem__value')?.innerHTML);
-    const numberOfGamesPlayed = parseFloat(document.querySelector('body > div.main > div.group.group--3 > div.group__main > div:nth-child(5) > div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(1) > div.globalStatItem__value')?.innerHTML);
+    const goalScoredByMatch = parseFloat(document.querySelector('body > div.main div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(3) > div.globalStatItem__value')?.innerHTML);
+    const goalTakenByMatch = parseFloat(document.querySelector('body > div.main div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(2) > div.globalStatItem__value')?.innerHTML);
+    const numberOfGamesPlayed = parseFloat(document.querySelector('body > div.main div.blockVertical__contents > div:nth-child(1) > div > div:nth-child(1) > div.globalStatItem__value')?.innerHTML);
 
     const averageGoalScoredByMatch = Number((goalScoredByMatch / numberOfGamesPlayed).toFixed(2));
     const averageGoalTakenByMatch = Number((goalTakenByMatch / numberOfGamesPlayed).toFixed(2));

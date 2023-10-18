@@ -24,7 +24,7 @@ export const predictScore = async ({
 
 
 predictScore({
-  teamA: "Malte",
-  teamB: "Espagne",
+  teamA: "France",
+  teamB: "Suisse",
   simlulationCount: 100,
 })
