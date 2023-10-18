@@ -19,4 +19,12 @@ export const predictScore = async ({
     simlulationCount,
   });
   return scorePrediction;
+
 };
+
+
+predictScore({
+  teamA: "Malte",
+  teamB: "Espagne",
+  simlulationCount: 100,
+})
