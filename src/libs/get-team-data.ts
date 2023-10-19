@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import puppeteer, { Page } from "puppeteer";
 import { TeamData } from "../models/team-data";
 
 export const getTeamData = async (teamName: string): Promise<TeamData> => {
@@ -6,13 +6,12 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
-  const url = `https://www.footmercato.net/selection/${teamName}/`;
+  const urlTeamData = `https://www.footmercato.net/selection/${teamName}/`;
 
   const page = await browser.newPage();
 
   // Navigate the page to a URL
-  await page.goto(url);
-
+  await page.goto(urlTeamData);
 
   const teamData = await page.evaluate((name: string) => {
     const goalsScored = parseFloat(
@@ -47,7 +46,45 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
     };
   }, teamName);
 
-  await browser.close();
+  const fifaRankingPoints = await getFifaRankingPoints(teamName, page);
 
-  return teamData;
+  return {
+    ...teamData,
+    fifaRankingPoints
+  };
+};
+
+
+const getFifaRankingPoints = async (teamName: string, page: Page): Promise<string> => {
+  const urlFifaRanking = `https://www.fifa.com/fr/fifa-world-ranking/men/`;
+
+  await page.goto(urlFifaRanking);
+
+  let fifaRanking = 'Pays non trouvé';
+
+  while (fifaRanking === 'Pays non trouvé') {
+    const rows = await page.$$('tr.row_rankingTableFullRow__Y_A4i');
+    
+    for (const row of rows) {
+      const pays = await row.$('span.d-none.d-lg-block');
+      const paysText = await page.evaluate(p => p.textContent, pays);
+      
+      if (paysText.toLowerCase() === teamName.toLowerCase()) {
+        const indice = await row.$('div.d-flex.ff-mr-16');
+        fifaRanking = await page.evaluate(i => i.textContent, indice);
+        break;
+      }
+    }
+
+    if (fifaRanking === 'Pays non trouvé') {
+      const nextPageButton = await page.$('#content > main > section.ff-pt-64.ff-pb-32.ff-bg-grey-lightest > div > div > div.ff-mt-64 > div > div > div > div > div.ff-ml-16 > button');
+      if (nextPageButton) {
+        await nextPageButton.click();
+      } else {
+        break; 
+      }
+    }
+  }
+
+  return fifaRanking;
 };
