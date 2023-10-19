@@ -1,16 +1,18 @@
 import puppeteer, { Page } from "puppeteer";
 import { TeamData } from "../models/team-data";
 
-export const getTeamData = async (teamName: string): Promise<TeamData> => {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+type TeamDataFootMercato = {
+  name: string;
+  goalsScored: number;
+  goalsTaken: number;
+  numberOfGamesPlayed: number;
+  lastGames: boolean[];
+}
+
+const getFootMercatoData = async (teamName: string, page: Page): Promise<TeamDataFootMercato> => {
+
   const urlTeamData = `https://www.footmercato.net/selection/${teamName}/`;
 
-  const page = await browser.newPage();
-
-  // Navigate the page to a URL
   await page.goto(urlTeamData);
 
   const teamData = await page.evaluate((name: string) => {
@@ -45,13 +47,8 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
       lastGames,
     };
   }, teamName);
-
-  const fifaRankingPoints = await getFifaRankingPoints(teamName, page);
-
-  return {
-    ...teamData,
-    fifaRankingPoints
-  };
+  
+return teamData;
 };
 
 
@@ -88,3 +85,23 @@ const getFifaRankingPoints = async (teamName: string, page: Page): Promise<strin
 
   return fifaRanking;
 };
+
+export const getTeamData = async (teamName: string): Promise<TeamData> => {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  const page = await browser.newPage();
+
+  const teamDataFootMercato = await getFootMercatoData(teamName, page);
+  console.log(teamDataFootMercato);
+  const fifaRankingPoints = await getFifaRankingPoints(teamName, page);
+  console.log(teamDataFootMercato);
+  await browser.close();
+
+  return {
+    ...teamDataFootMercato,
+    fifaRankingPoints
+  }
+}
