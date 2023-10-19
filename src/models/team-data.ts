@@ -4,4 +4,5 @@ export type TeamData = {
   goalsTaken: number;
   numberOfGamesPlayed: number;
   lastGames: boolean[];
+  fifaRankingPoints: string;
 };
