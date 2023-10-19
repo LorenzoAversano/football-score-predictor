@@ -20,30 +20,30 @@ A Node.js typescript package to predict the score between two national football 
 
 ## Installation
 
-\`\`\`bash
+```bash
 npm install football-score-predictor
-\`\`\`
+```
 
 or using yarn
 
-\`\`\`bash
+```bash
 yarn add football-score-predictor
-\`\`\`
+```
 
 ## Usage
 
-\`\`\`typescript
+```typescript
 import { predictScore } from "football-score-predictor";
-\`\`\`
+```
 
 ## Example
 
-\`\`\`typescript
+```typescript
 predictScore({
   teamA: "France",
   teamB: "Allemagne",
 }).then((scorePrediction) => console.log(scorePrediction));
-\`\`\`
+```
 
 ### Screenshot
 
@@ -53,12 +53,12 @@ predictScore({
 
 The prediction will return an object with the following format:
 
-\`\`\`json
+```json
 {
   "teamA": { "name": "France", "score": 3 },
   "teamB": { "name": "Allemagne", "score": 1 }
 }
-\`\`\`
+```
 
 ## Roadmap
 
