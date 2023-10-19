@@ -27,7 +27,7 @@ jobs:
         run: npx eslint 'src/**/*.ts'
 
       - name: "Build"
-      run: pnpm run build
+        run: npm run build
 
       - name: "Publish to NPM"
         uses: JS-DevTools/npm-publish@v2
