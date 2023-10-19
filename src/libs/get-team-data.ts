@@ -62,6 +62,7 @@ export const getFifaRankingPoints = async (
   await page.goto(urlFifaRanking);
 
   let fifaRanking = "Pays non trouvé";
+  let pageNmbr = 1;
 
   while (fifaRanking === "Pays non trouvé") {
     const rows = await page.$$("tr.row_rankingTableFullRow__Y_A4i");
@@ -81,8 +82,9 @@ export const getFifaRankingPoints = async (
       const nextPageButton = await page.$(
         "#content > main > section.ff-pt-64.ff-pb-32.ff-bg-grey-lightest > div > div > div.ff-mt-64 > div > div > div > div > div.ff-ml-16 > button"
       );
-      if (nextPageButton) {
+      if (nextPageButton && pageNmbr < 5) {
         await nextPageButton.click();
+        pageNmbr++;
       } else {
         break;
       }
@@ -109,3 +111,5 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
     fifaRankingPoints,
   };
 };
+
+
