@@ -41,8 +41,7 @@ export const calculScorePrediction = ({
     teamBScore = teamBScore / fifaRankingRatio;
   }
 
-  const isDraw = teamAScore / teamBScore > 0.9 && teamAScore / teamBScore < 1.0;
-
+  const isDraw = teamAScore / teamBScore > 0.9 && teamAScore / teamBScore < 1.1;
   if (isDraw) {
     teamAScore = Math.round((teamAScore + teamBScore) / 2);
     teamBScore = teamAScore;

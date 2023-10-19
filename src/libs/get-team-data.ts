@@ -7,10 +7,12 @@ type TeamDataFootMercato = {
   goalsTaken: number;
   numberOfGamesPlayed: number;
   lastGames: boolean[];
-}
+};
 
-const getFootMercatoData = async (teamName: string, page: Page): Promise<TeamDataFootMercato> => {
-
+export const getFootMercatoData = async (
+  teamName: string,
+  page: Page
+): Promise<TeamDataFootMercato> => {
   const urlTeamData = `https://www.footmercato.net/selection/${teamName}/`;
 
   await page.goto(urlTeamData);
@@ -47,38 +49,42 @@ const getFootMercatoData = async (teamName: string, page: Page): Promise<TeamDat
       lastGames,
     };
   }, teamName);
-  
-return teamData;
+
+  return teamData;
 };
 
-
-const getFifaRankingPoints = async (teamName: string, page: Page): Promise<string> => {
+export const getFifaRankingPoints = async (
+  teamName: string,
+  page: Page
+): Promise<string> => {
   const urlFifaRanking = `https://www.fifa.com/fr/fifa-world-ranking/men/`;
 
   await page.goto(urlFifaRanking);
 
-  let fifaRanking = 'Pays non trouvé';
+  let fifaRanking = "Pays non trouvé";
 
-  while (fifaRanking === 'Pays non trouvé') {
-    const rows = await page.$$('tr.row_rankingTableFullRow__Y_A4i');
-    
+  while (fifaRanking === "Pays non trouvé") {
+    const rows = await page.$$("tr.row_rankingTableFullRow__Y_A4i");
+
     for (const row of rows) {
-      const pays = await row.$('span.d-none.d-lg-block');
-      const paysText = await page.evaluate(p => p.textContent, pays);
-      
+      const pays = await row.$("span.d-none.d-lg-block");
+      const paysText = await page.evaluate((p) => p.textContent, pays);
+
       if (paysText.toLowerCase() === teamName.toLowerCase()) {
-        const indice = await row.$('div.d-flex.ff-mr-16');
-        fifaRanking = await page.evaluate(i => i.textContent, indice);
+        const indice = await row.$("div.d-flex.ff-mr-16");
+        fifaRanking = await page.evaluate((i) => i.textContent, indice);
         break;
       }
     }
 
-    if (fifaRanking === 'Pays non trouvé') {
-      const nextPageButton = await page.$('#content > main > section.ff-pt-64.ff-pb-32.ff-bg-grey-lightest > div > div > div.ff-mt-64 > div > div > div > div > div.ff-ml-16 > button');
+    if (fifaRanking === "Pays non trouvé") {
+      const nextPageButton = await page.$(
+        "#content > main > section.ff-pt-64.ff-pb-32.ff-bg-grey-lightest > div > div > div.ff-mt-64 > div > div > div > div > div.ff-ml-16 > button"
+      );
       if (nextPageButton) {
         await nextPageButton.click();
       } else {
-        break; 
+        break;
       }
     }
   }
@@ -95,13 +101,11 @@ export const getTeamData = async (teamName: string): Promise<TeamData> => {
   const page = await browser.newPage();
 
   const teamDataFootMercato = await getFootMercatoData(teamName, page);
-  console.log(teamDataFootMercato);
   const fifaRankingPoints = await getFifaRankingPoints(teamName, page);
-  console.log(teamDataFootMercato);
   await browser.close();
 
   return {
     ...teamDataFootMercato,
-    fifaRankingPoints
-  }
-}
+    fifaRankingPoints,
+  };
+};
