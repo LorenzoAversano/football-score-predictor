@@ -1,6 +1,6 @@
 {
   "name": "football-score-predictor",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "description": "A score simulation between two teams",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
